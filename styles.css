@@ -1,4 +1,3 @@
-/* styles.css */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,13 +9,15 @@
   .calculator-container {
     height: 100vh;
     padding: 20px;
-    background-color: white;
   }
   .calculator-container,
   .form-container,
-  .result-container {
+  .results-container {
     display: flex;
     flex-direction: column;
+  }
+  .form-container {
+    padding: 20px 0;
   }
 }
 
@@ -26,39 +27,77 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    width: 80%;
     max-width: 700px;
+    width: 80%;
     padding: 20px;
   }
   .form-container,
-  .result-container {
+  .results-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
-  .form-col-1,
-  .form-col-2,
-  .result-col-1,
-  .result-col-2 {
-    width: 45%;
+  .form-container {
+    padding: 20px;
   }
-  .vertical-border {
-    border-left: 1.5px solid black;
-    height: 50px;
-    margin-left: -15px;
+  .form-col-left,
+  .form-col-right,
+  .results-col-left,
+  .results-col-right {
+    width: 50%;
   }
-}
-
-.calculator-title {
-  text-align: center;
-  margin-bottom: 20px;
+  .form-col-mid,
+  .results-col-mid {
+    width: 5%;
+  }
+  .results-col-mid {
+    position: relative;
+  }
+  .results-col-mid::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 1.5px;
+    height: 80%;
+    background-color: black;
+  }
+  .results-group {
+    text-align: center;
+  }
 }
 
 .form-group {
-  margin-bottom: 15px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 15px;
+}
+
+/* bug fix breakpoint - hide extra text when shrinking down (text which causes misalignment of input boxes in form-groups and p tags in results-groups) */
+.car-value-label-span-mini,
+.down-payment-label-span-mini {
+  display: none;
+}
+@media (min-width: 601px) and (max-width: 698px) {
+  .car-value-label-span,
+  .down-payment-label-span,
+  .leasing-cost,
+  .monthly-span-mini {
+    display: none;
+  }
+  .car-value-label-span-mini,
+  .down-payment-label-span-mini {
+    display: inline;
+  }
+  .p-no-wrap {
+    white-space: nowrap;
+  }
+}
+/* end */
+
+.calculator-title {
+  text-align: center;
+  padding: 20px;
 }
 
 label {
@@ -74,22 +113,22 @@ input[type="number"] {
   padding: 8px;
 }
 
-input[type="range"] {
-  margin-bottom: 20px;
+.results {
+  padding: 20px;
 }
 
-.result-title {
+.results-title {
   font-weight: bold;
   text-align: center;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 p {
-  margin: 4px 0;
+  padding: 3px 0;
 }
 
 .border-div {
   border-bottom: 1.5px solid #ccc;
-  margin: 15px auto 20px auto;
+  margin: 0 auto;
   width: 85%;
 }

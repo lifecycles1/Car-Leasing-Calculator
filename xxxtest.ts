@@ -11,7 +11,6 @@ type Elements = {
   // results display
   leasingCost: HTMLSpanElement;
   downPaymentAmount: HTMLSpanElement;
-  downPaymentPercent: HTMLSpanElement;
   monthlyInstalment: HTMLSpanElement;
   interestRate: HTMLSpanElement;
 };
@@ -28,7 +27,6 @@ const elements: Elements = {
   downPaymentDisplay: document.getElementById("down-payment-display") as HTMLInputElement,
   leasingCost: document.getElementById("leasing-cost") as HTMLSpanElement,
   downPaymentAmount: document.getElementById("down-payment-amount") as HTMLSpanElement,
-  downPaymentPercent: document.getElementById("down-payment-percent") as HTMLSpanElement,
   monthlyInstalment: document.getElementById("monthly-instalment") as HTMLSpanElement,
   interestRate: document.getElementById("interest-rate") as HTMLSpanElement,
 };
@@ -48,6 +46,13 @@ const annualInterestRates: AnnualInterestRates = {
   new: 2.99,
   used: 3.7,
 };
+
+// Initialize default values
+elements.carValueRange.value = "10000";
+elements.carValueInput.value = "10000";
+elements.leasePeriod.value = "12";
+elements.downPaymentRange.value = "10";
+elements.downPaymentDisplay.value = "10";
 
 /**
  * Calculates the total leasing cost and updates the DOM elements with the calculated values.
@@ -74,7 +79,6 @@ function calculate() {
   // Update DOM elements with calculated values
   elements.leasingCost.textContent = totalLeasingCost.toFixed(2);
   elements.downPaymentAmount.textContent = downPayment.toFixed(2);
-  elements.downPaymentPercent.textContent = downPaymentPercentValue.toFixed(2);
   elements.monthlyInstalment.textContent = monthlyPayment.toFixed(2);
   elements.interestRate.textContent = annualInterestRates[carTypeValue].toFixed(2);
 }
@@ -85,28 +89,24 @@ function syncInputs(event: Event) {
   if (target === elements.carValueRange) {
     elements.carValueInput.value = target.value;
   } else if (target === elements.carValueInput) {
+    if (target.value < 10000) {
+      target.value = 10000;
+    } else if (target.value > 200000) {
+      target.value = 200000;
+    }
     elements.carValueRange.value = target.value;
   }
   calculate();
 }
 
-// Add event listeners to input elements
+elements.carType.addEventListener("change", calculate);
+elements.leasePeriod.addEventListener("change", calculate);
 elements.carValueRange.addEventListener("input", syncInputs);
 elements.carValueInput.addEventListener("input", syncInputs);
 elements.downPaymentRange.addEventListener("input", () => {
   elements.downPaymentDisplay.value = elements.downPaymentRange.value;
   calculate();
 });
-
-elements.carType.addEventListener("change", calculate);
-elements.leasePeriod.addEventListener("change", calculate);
-
-// Initialize default values
-elements.carValueRange.value = "10000";
-elements.carValueInput.value = "10000";
-elements.leasePeriod.value = "12";
-elements.downPaymentRange.value = "10";
-elements.downPaymentDisplay.value = "10";
 
 // perform initial calculation
 calculate();
